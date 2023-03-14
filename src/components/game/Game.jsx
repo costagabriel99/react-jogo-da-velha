@@ -18,6 +18,7 @@ function Game () {
     const [gameState, setGameState] = useState(Array(9).fill(0))
     const [currentPlayer, setCurrentPlayer] = useState(1)
     const [winner, setWinner] = useState(0)
+    const [winnerLine, setWinnerLine] = useState([])
 
     const handleClick = (pos) => {
         if (gameState[pos] === 0 && winner === 0){
@@ -32,6 +33,7 @@ function Game () {
             const sum = values.reduce((sum, value) => sum + value)
             if (sum === 3 || sum === -3) {
                 setWinner(sum / 3)
+                setWinnerLine(line)
                 
         }
         } )
@@ -40,7 +42,11 @@ function Game () {
     const handleReset = () => {
         setGameState(Array(9).fill(0))
         setWinner(0)
+        setWinnerLine([])
     }
+
+    const verifyWinnerLine = (pos) => 
+        winnerLine.find((value) => value === pos) !== undefined
 
     useEffect(() => {
     setCurrentPlayer(currentPlayer * -1)
@@ -56,6 +62,7 @@ function Game () {
                     key={`game-option-pos-${pos}`}
                     status={value}
                     onClick={() => handleClick(pos)}
+                    isWinner={verifyWinnerLine(pos)}
                 /> )
             }
 
